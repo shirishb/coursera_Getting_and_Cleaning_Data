@@ -1,16 +1,28 @@
-download_rawdata <- function() {
-    # Downloads and extracts raw data files
 
+download_rawdata <- function() {
+    # Downloads, timestamps and extracts raw data files for further processing
+    
     datadir <- "./data"
-    destfile <- "./data/data.zip"
+    destfile <- "./data/UCI HAR Dataset.zip"
+    unzipdata <- "./data/UCI HAR Dataset"
     url <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
     
     if (!file.exists(datadir)) {
+        message(paste("Created", datadir))
         dir.create(datadir)
     }
     
     if (!file.exists(destfile)) {
+        message(paste("Downloading", destfile))
         download.file(url, destfile, method="curl")
+
+        # Save timestamp for downloaded data
+        ts <- timestamp(prefix=paste(destfile, "was downloaded on "), suffix=".")
+        write(ts, file=paste(datafile,".timestamp", sep=""))
+    }
+    
+    if (!file.exists(unzipdata)) {
+        message(paste("Unzipping", destfile))
         unzip(destfile, exdir=datadir)
     }
 }
@@ -51,47 +63,56 @@ parse_rawdata <- function(raw_data, activity_labels, features) {
     cbind(x, y, subject)   
 }
 
-
-
-get_tidydata <- function() {
+get_tidydata1 <- function() {
     
-    # Activity labels converted to a character from factor to get levels in
-    # correct order
-    ACTIVITY_LABELS <- "./data/UCI HAR Dataset/activity_labels.txt"
-    activity_labels <- read.table(ACTIVITY_LABELS)
+    # Activity labels are converted to a character from factor to get levels in
+    # an expected order
+    activity_labels <- read.table("./data/UCI HAR Dataset/activity_labels.txt")
     activity_labels <- as.character(activity_labels$V2)
     
     # Feature names converted to a character from factor so it can be
     # manipulated and set as column names
-    FEATURES <- "./data/UCI HAR Dataset/features.txt"
-    features <- read.table(FEATURES)
-    features$V2 <- as.character(features$V2)
+    features <- read.table("./data/UCI HAR Dataset/features.txt")
+    features <- as.character(features$V2)
     
-    RAW_TRAIN <- list()
-    RAW_TRAIN["X"] <- "./data/UCI HAR Dataset/train/X_train.txt"
-    RAW_TRAIN["Y"] <- "./data/UCI HAR Dataset/train/y_train.txt"
-    RAW_TRAIN["Subject"] <- "./data/UCI HAR Dataset/train/subject_train.txt"
+    raw_train <- list()
+    raw_train["X"] <- "./data/UCI HAR Dataset/train/X_train.txt"
+    raw_train["Y"] <- "./data/UCI HAR Dataset/train/y_train.txt"
+    raw_train["Subject"] <- "./data/UCI HAR Dataset/train/subject_train.txt"
 
-    RAW_TEST <- list()
-    RAW_TEST["X"] <- "./data/UCI HAR Dataset/test/X_test.txt"
-    RAW_TEST["Y"] <- "./data/UCI HAR Dataset/test/y_test.txt"
-    RAW_TEST["Subject"] <- "./data/UCI HAR Dataset/test/subject_test.txt" 
+    raw_test <- list()
+    raw_test["X"] <- "./data/UCI HAR Dataset/test/X_test.txt"
+    raw_test["Y"] <- "./data/UCI HAR Dataset/test/y_test.txt"
+    raw_test["Subject"] <- "./data/UCI HAR Dataset/test/subject_test.txt" 
     
-    train <- parse_rawdata(RAW_TRAIN, activity_labels, features$V2)
-    test <- parse_rawdata(RAW_TEST, activity_labels, features$V2)
+    message("Parsing training data")
+    train <- parse_rawdata(raw_train, activity_labels, features)
     
-    data <- rbind(train, test)
+    message("Parsing test data")
+    test <- parse_rawdata(raw_test, activity_labels, features)
+    
+    message("Merging test and training data")
+    rbind(train, test)
 }
+
+
+get_tidydata2 <- function(data1) {
+    require(plyr)
+    require(reshape2)
+    
+    dataMelt <- melt(data1, id=c("Subject", "Activity"))
+    dcast(dataMelt, Activity + Subject ~ variable, mean)
+}
+
 
 download_rawdata()
 
-require(plyr)
-require(reshape2)
+data1 <- get_tidydata1()
+data1file <- "UCI HAR Data Set 1.csv"
+message(paste("Writing", data1file))
+write.csv(data1, data1file, row.names=FALSE)
 
-data <- get_tidydata()
-write.csv(data, "tidy_data1.csv", row.names=FALSE)
-
-dataMelt <- melt(data, id=c("Subject", "Activity"))
-data2 <- dcast(dataMelt, Activity + Subject ~ variable, mean)
-
-write.csv(data2, "tidy_data2.csv", row.names=FALSE)
+data2 <- get_tidydata2(data1)
+data2file <- "UCI HAR Data Set 2.csv"
+message(paste("Writing", data2file))
+write.csv(data2, data2file, row.names=FALSE)
