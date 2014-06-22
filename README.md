@@ -1,6 +1,8 @@
 This repo implements the course project for the Coursera course, Getting and Cleaning Data
 by Jeff Leek, PhD, Roger D. Peng, PhD, Brian Caffo, PhD.
 
+Assignment is implemented by **github.com/shirishb** on Jun 22, 2014.
+
 # Course Project
 
 *Taken verbatim from the assignment page.*
