@@ -18,7 +18,7 @@ download_rawdata <- function() {
 
         # Save timestamp for downloaded data
         ts <- timestamp(prefix=paste(destfile, "was downloaded on "), suffix=".")
-        write(ts, file=paste(datafile,".timestamp", sep=""))
+        write(ts, file=paste(destfile,".timestamp", sep=""))
     }
     
     if (!file.exists(unzipdata)) {
