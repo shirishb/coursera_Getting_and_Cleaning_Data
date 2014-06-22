@@ -1,4 +1,3 @@
-
 download_rawdata <- function() {
     # Downloads, timestamps and extracts raw data files for further processing
     
@@ -28,6 +27,8 @@ download_rawdata <- function() {
 }
 
 parse_rawdata <- function(raw_data, activity_labels, features) {
+    # Contains processing that is common to the 'test' and 'train' datasets
+    # that are run on each of them prior to being merged together
 
     x <- read.table(raw_data$X)
     names(x) <- features
@@ -39,7 +40,7 @@ parse_rawdata <- function(raw_data, activity_labels, features) {
     
     x <- x[,include_measurement]
     
-    # Clean column names
+    # Clean column names so the syntax is correct
     colnames <- names(x)
     colnames <- gsub("-std()", "StdDev", colnames, fixed=TRUE)
     colnames <- gsub("-mean()", "Mean", colnames, fixed=TRUE)
@@ -64,7 +65,9 @@ parse_rawdata <- function(raw_data, activity_labels, features) {
 }
 
 get_tidydata1 <- function() {
-    
+    # Generates a tidy data set as per steps #1-4 of the course project
+    # implementation of which is primarily in parse_rawdata()
+
     # Activity labels are converted to a character from factor to get levels in
     # an expected order
     activity_labels <- read.table("./data/UCI HAR Dataset/activity_labels.txt")
@@ -97,13 +100,23 @@ get_tidydata1 <- function() {
 
 
 get_tidydata2 <- function(data1) {
+    # Generates 'tidy' dataset as per step #5 of course project
+
+    # Note: Assumption is made that this dataset is derived from steps #1-4, 
+    # i.e. get_tidydata1() as per this implementation, and is thus a subset of
+    # the original raw data set.
+
     require(plyr)
     require(reshape2)
-    
+
     dataMelt <- melt(data1, id=c("Subject", "Activity"))
     dcast(dataMelt, Activity + Subject ~ variable, mean)
 }
 
+
+# Code below is intentionally not in a function and runs when this file is 
+# sourced, this was done to simplify the number of steps required to generate
+# the tidy datasets
 
 download_rawdata()
 
