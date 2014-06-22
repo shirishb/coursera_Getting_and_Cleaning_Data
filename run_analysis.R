@@ -41,10 +41,12 @@ parse_rawdata <- function(raw_data, activity_labels, features) {
     x <- x[,include_measurement]
     
     # Clean column names so the syntax is correct
+    # Following required changes were identified using manual inspection
     colnames <- names(x)
     colnames <- gsub("-std()", "StdDev", colnames, fixed=TRUE)
     colnames <- gsub("-mean()", "Mean", colnames, fixed=TRUE)
     colnames <- gsub("-", "", colnames, fixed=TRUE)
+    colnames <- gsub("BodyBody", "Body", colnames, fixed=TRUE)
     names(x) <- make.names(colnames, unique=TRUE)
     
     
