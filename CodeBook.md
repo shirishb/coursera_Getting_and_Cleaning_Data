@@ -1,3 +1,7 @@
+**Note:** This file is INCOMPLETE. I submitted an updated version *AFTER* the course project submission deadline as CodeBook_late.md. This was done just for completeness sake... please grade me on my incomplete work for fairness! :)
+
+---
+
 **Note:** This file is heavily derived from the files *README.txt* and *features_info.txt* from the UCI "Human Activity Recognition Using Smartphones Data Set, Version 1.0" available at:
 http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
 
