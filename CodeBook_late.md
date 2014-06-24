@@ -1,4 +1,4 @@
-**Note:** This file is heavily derived from the files *README.txt* and *features_info.txt* from the UCI "Human Activity Recognition Using Smartphones Data Set, Version 1.0" available at:
+**Note:** This file is HEAVILY derived from the files *README.txt* and *features_info.txt* from the UCI "Human Activity Recognition Using Smartphones Data Set, Version 1.0" available at:
 http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
 
 Details about authorship are provided in the project **README.md** file and not repeated in this file.
@@ -36,16 +36,16 @@ Below are the experiment attributes in a compressed table format to allow for de
 
 | | Attribute Name | | | Description | Units |
 | :-- | :-- | :-- | :-- | :-- | :-- | 
-| t,f | BodyAcc | Mean, StdDev | X, Y, Z | I could probably work this out from the experiment data | I |
-| t | GravityAcc | Mean, StdDev | X, Y, Z | Instead I just provide some text to show that this information is important... | shouldn't |
-| t,f | BodyAccJerk | Mean, StdDev | X, Y, Z | ...to include in this format if this were an actual 'tidy' data set that I was creating | forget |
-| t,f | BodyGyro | Mean, StdDev | X, Y, Z | Please assume the rest of the column is full too! | to |
-| t | BodyGyroJerk | Mean, StdDev | X, Y, Z | | include |
-| t,f | BodyAccMag | Mean, StdDev | | | the |
-| t | GravityAccMag | Mean, StdDev | | | units! |
-| t,f | BodyAccJerkMag | Mean, StdDev | | | They |
-| t,f | BodyGyroMag | Mean, StdDev | | | are |
-| t,f | BodyGyroJerkMag | Mean, StdDev | | | important! |
+| t,f | BodyAcc | Mean, StdDev | X, Y, Z | I could have worked this out from the "original" experiment description quoted above | I |
+| t | GravityAcc | Mean, StdDev | X, Y, Z | Instead I'm just providing some dummy text to show the template for a tidy dataset... | shouldn't |
+| t,f | BodyAccJerk | Mean, StdDev | X, Y, Z | Which I would have filled in if this were an "actual" dataset that I was creating | forget |
+| t,f | BodyGyro | Mean, StdDev | X, Y, Z | ... | to |
+| t | BodyGyroJerk | Mean, StdDev | X, Y, Z | ... | include |
+| t,f | BodyAccMag | Mean, StdDev | | ... | the |
+| t | GravityAccMag | Mean, StdDev | | ... | units! |
+| t,f | BodyAccJerkMag | Mean, StdDev | | ... | They |
+| t,f | BodyGyroMag | Mean, StdDev | | ... | are |
+| t,f | BodyGyroJerkMag | Mean, StdDev | | ... | important! |
 
 *Please see the "Actual Attribute Names" section below to see how the first four columns of the table below combine to form attribute (or feature) names in the datasets.*
 
@@ -58,11 +58,11 @@ Below are the experiment attributes in a compressed table format to allow for de
 * Contains 180 observations (rows) of 68 attributes (columns)
 * The columns in this dataset are the same as in dataset 1, however, differ in one important way: the value is now the average (mean) of each attribute by student and activity. Which is why the number of rows is reduced.
 
-## Key differences from "original" dataset
+## Key differences from "original" dataset to make it "tidy"
 
-* Data is merged into a single file (X - features/attributes, Y - activity, Subject) for both training and test data -- making it easier to use for further analysis.
-* Feature names are modified to not contain "()" or "-" so they can be used as legal column names in R.
-* Subset of original data is used as per requirements of the assignment (only features relating to "mean" or "standard deviation" measurements)
+1. Data is merged into a single file (X - features/attributes, Y - activity, Subject) for both training and test data -- making it easier to use for further analysis.
+2. Feature names are modified to not contain "()" or "-" so they can be used as legal column names in R.
+3. Subset of original data is used as per requirements of the assignment (only features relating to "mean" or "standard deviation" measurements)
 
 ## Actual Attribute Names
 
